@@ -1,0 +1,21 @@
+{
+  "schema": "tsharpworkbench.scenario",
+  "version": 1,
+  "id": "proxy/windows-multistep",
+  "title": "Windows proxy modal and resize",
+  "description": "Ordinary framework-only target: repeated keys, nested modal, real backend grid resize and fresh checkpoints.",
+  "backend": "proxy-logical",
+  "expectedOutcome": "passed",
+  "steps": [
+    { "kind": "checkpoint", "id": "initial", "assertions": [{ "id": "zero", "kind": "screen-contains", "text": "Count: 0" }] },
+    { "kind": "key", "key": "kbF2" },
+    { "kind": "key", "key": "kbF2" },
+    { "kind": "checkpoint", "id": "two", "assertions": [{ "id": "two", "kind": "screen-contains", "text": "Count: 2" }] },
+    { "kind": "key", "key": "kbF3" },
+    { "kind": "checkpoint", "id": "modal", "assertions": [{ "id": "opened", "kind": "screen-contains", "text": "Ordinary modal" }] },
+    { "kind": "key", "key": "kbEsc" },
+    { "kind": "resize", "width": 140, "height": 40 },
+    { "kind": "checkpoint", "id": "resized", "assertions": [{ "id": "closed", "kind": "screen-contains", "text": "Modal closed" }] },
+    { "kind": "checkpoint", "id": "stable", "assertions": [{ "id": "stable", "kind": "screen-contains", "text": "Modal closed" }] }
+  ]
+}

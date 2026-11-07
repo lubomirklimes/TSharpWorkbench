@@ -1,0 +1,26 @@
+{
+  "schema": "tsharpworkbench.scenario",
+  "version": 1,
+  "id": "proxy/counter-negative",
+  "title": "Ordinary counter negative assertion",
+  "description": "Five fresh captures after one F2; expected assertion failure",
+  "backend": "proxy-logical",
+  "expectedOutcome": "failed",
+  "steps": [
+    {
+      "kind": "key",
+      "key": "kbF2"
+    },
+    {
+      "kind": "checkpoint",
+      "id": "wrong-count",
+      "assertions": [
+        {
+          "id": "wrong",
+          "kind": "screen-contains",
+          "text": "Count: 999"
+        }
+      ]
+    }
+  ]
+}

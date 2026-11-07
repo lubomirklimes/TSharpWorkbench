@@ -1,0 +1,31 @@
+<Solution>
+  <Folder Name="/Diagnostics/" Id="07c2787e-eac7-c090-1ba3-a61ec2a24d84">
+    <Project Path="diagnostics/ConsoleController/ConsoleController.csproj" />
+    <Project Path="diagnostics/ProxyOrdinary/ProxyOrdinary.csproj" />
+    <Project Path="diagnostics/ProxyStartup/ProxyStartup.csproj" />
+    <Project Path="tools/Workbench.Storage/Workbench.Storage.csproj" />
+  </Folder>
+  <Folder Name="/Source/" Id="760b883f-237b-3d18-0125-ea063ecf81e3">
+    <Project Path="src/TSharpWorkbench.Proxy/TSharpWorkbench.Proxy.csproj" />
+    <Project Path="src/TSharpWorkbench.Storage/TSharpWorkbench.Storage.csproj" />
+    <Project Path="src/TSharpWorkbench.Testing/TSharpWorkbench.Testing.csproj" />
+    <Project Path="src/TSharpWorkbench/TSharpWorkbench.csproj" />
+  </Folder>
+  <Folder Name="/Source/Diagnostics/">
+    <Project Path="src/TSharpWorkbench.Diagnostics.DriverOutput/TSharpWorkbench.Diagnostics.DriverOutput.csproj" />
+    <Project Path="src/TSharpWorkbench.Diagnostics.NativeHosts/TSharpWorkbench.Diagnostics.NativeHosts.csproj" />
+    <Project Path="src/TSharpWorkbench.Diagnostics.NativePixels/TSharpWorkbench.Diagnostics.NativePixels.csproj" />
+  </Folder>
+  <Folder Name="/Targets/">
+    <Project Path="tests/TSharpWorkbench.SampleTarget/TSharpWorkbench.SampleTarget.csproj" />
+  </Folder>
+  <Folder Name="/tests/" Id="b78bac62-e9b1-d17b-e784-798e158ed6db">
+    <Project Path="tests/TSharpWorkbench.Diagnostics.DriverOutput.Tests/TSharpWorkbench.Diagnostics.DriverOutput.Tests.csproj" />
+    <Project Path="tests/TSharpWorkbench.Diagnostics.NativeHosts.Tests/TSharpWorkbench.Diagnostics.NativeHosts.Tests.csproj" />
+    <Project Path="tests/TSharpWorkbench.Diagnostics.NativePixels.Tests/TSharpWorkbench.Diagnostics.NativePixels.Tests.csproj" />
+    <Project Path="tests/TSharpWorkbench.Proxy.Tests/TSharpWorkbench.Proxy.Tests.csproj" />
+    <Project Path="tests/TSharpWorkbench.Storage.Tests/TSharpWorkbench.Storage.Tests.csproj" />
+    <Project Path="tests/TSharpWorkbench.Tests/TSharpWorkbench.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Tools/" />
+</Solution>

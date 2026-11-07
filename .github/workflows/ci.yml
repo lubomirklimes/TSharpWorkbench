@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    name: CI / ${{ matrix.rid }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2025
+            rid: win-x64
+          - runner: ubuntu-24.04
+            rid: linux-x64
+          - runner: macos-15-intel
+            rid: osx-x64
+          - runner: macos-15
+            rid: osx-arm64
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Script policy checks
+        run: ./scripts/test-ci-workbench.ps1
+      - name: Locked portable restore
+        run: ./scripts/ci-workbench.ps1 -Phase Restore -Rid ${{ matrix.rid }}
+      - name: Release build
+        run: ./scripts/ci-workbench.ps1 -Phase Build -Rid ${{ matrix.rid }}
+      - name: Cross-platform headless tests (no skipped cases)
+        timeout-minutes: 8
+        run: ./scripts/ci-workbench.ps1 -Phase Test -Rid ${{ matrix.rid }}
+      - name: Package and extracted CLI smoke
+        timeout-minutes: 10
+        run: ./scripts/ci-workbench.ps1 -Phase Package -Rid ${{ matrix.rid }}
+      - name: Results and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-${{ matrix.rid }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            artifacts/github/test-results/**
+            artifacts/github/distribution/**
+            artifacts/github/archive-smoke.*.txt
+            artifacts/github/rid-locks/**
+            artifacts/github/scenario-smoke/**
+            artifacts/github/*.log
+          if-no-files-found: warn
+          retention-days: 14

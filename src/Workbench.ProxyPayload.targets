@@ -1,0 +1,165 @@
+<Project>
+  <!-- Stages the Workbench Proxy deployment unit (proxy-payload/) and writes its provenance manifest
+       (payload-manifest.json). One task serves the build output and dotnet publish:
+       - Only files that TSharpWorkbench.Proxy.deps.json lists are staged (managed assets flat, native assets under
+         runtimes/<rid>/native/), plus the deps.json itself. No PDB, XML or other build leftovers.
+       - Build output: every RID the closure has (the tests and the in-repo Workbench use it as before).
+       - Publish: only the RIDs in WorkbenchPayloadRuntimeIdentifiers (default: the publish RuntimeIdentifier, else the
+         RID of the SDK that publishes, NETCoreSdkRuntimeIdentifier). "all" keeps every RID.
+       - The manifest records package identities (deps.json libraries, NuGet sha512), the restore sources and NuGet
+         configuration files, the build configuration, the RIDs carried and the SHA-256/size of every staged file.
+       The Workbench refuses a payload whose files do not match its manifest (WorkbenchPayloadManifest.cs). -->
+  <UsingTask TaskName="WriteWorkbenchProxyPayload" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceDirectory ParameterType="System.String" Required="true" />
+      <DestinationDirectory ParameterType="System.String" Required="true" />
+      <RuntimeIdentifiers ParameterType="System.String" Required="true" />
+      <Kind ParameterType="System.String" Required="true" />
+      <Configuration ParameterType="System.String" Required="true" />
+      <AssetsFile ParameterType="System.String" />
+      <WorkbenchTesting ParameterType="System.String" />
+      <RequirePackageMode ParameterType="System.Boolean" />
+      <AllowAnySource ParameterType="System.Boolean" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" /><Using Namespace="System.Collections.Generic" /><Using Namespace="System.IO" /><Using Namespace="System.Linq" />
+      <Using Namespace="System.Text" /><Using Namespace="System.Xml.Linq" /><Using Namespace="System.Runtime.Serialization.Json" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        const string Deps = "TSharpWorkbench.Proxy.deps.json", ManifestName = "payload-manifest.json";
+        // JSON -> XML (DataContract JSON reader, available to inline tasks on every MSBuild host).
+        Func<string, XElement> json = path => { using (var r = JsonReaderWriterFactory.CreateJsonReader(File.ReadAllBytes(path), new System.Xml.XmlDictionaryReaderQuotas())) return XElement.Load(r); };
+        Func<XElement, string> key = e => (string)e.Attribute("item") ?? e.Name.LocalName;
+        Func<string, string> hash = path => { using (var s = File.OpenRead(path)) using (var sha = System.Security.Cryptography.SHA256.Create()) return BitConverter.ToString(sha.ComputeHash(s)).Replace("-", "").ToLowerInvariant(); };
+        Func<string, string> q = s => s == null ? "null" : "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+
+        string depsPath = Path.Combine(SourceDirectory, Deps);
+        if (!File.Exists(depsPath)) { Log.LogError("Proxy payload: " + depsPath + " does not exist (the Proxy was not built)."); return false; }
+        var deps = json(depsPath);
+        var target = deps.Element("runtimeTarget");
+        string targetName = (string)target.Element("name");
+        var libraries = deps.Element("libraries").Elements().ToDictionary(key, e => e);
+        var targetLibs = deps.Element("targets").Elements().First(e => key(e) == targetName).Elements().ToList();
+        var allRids = new SortedSet<string>(StringComparer.Ordinal);
+        foreach (var lib in targetLibs)
+            if (lib.Element("runtimeTargets") is XElement rt)
+                foreach (var a in rt.Elements()) if ((string)a.Element("assetType") == "native") allRids.Add((string)a.Element("rid"));
+        var wanted = RuntimeIdentifiers.Trim() == "all" ? new SortedSet<string>(allRids, StringComparer.Ordinal)
+            : new SortedSet<string>(RuntimeIdentifiers.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries).Select(r => r.Trim()), StringComparer.Ordinal);
+        foreach (string rid in wanted.ToArray())
+            if (!allRids.Contains(rid)) { Log.LogWarning("Proxy payload: the Proxy closure has no native assets for " + rid + "; that RID gets the managed Proxy only (no SDL)."); }
+
+        // (relative path in the payload, package, version, rid or null)
+        var files = new List<Tuple<string, string, string, string>>();
+        var packages = new List<string>();
+        string frameworkType = null;
+        foreach (var lib in targetLibs)
+        {
+            string name = key(lib); int slash = name.IndexOf('/');
+            string id = name.Substring(0, slash), version = name.Substring(slash + 1);
+            XElement info; libraries.TryGetValue(name, out info);
+            string type = info == null ? "" : (string)info.Element("type"), sha512 = info == null ? "" : (string)info.Element("sha512");
+            if (id == "TSharpVision") frameworkType = type;
+            packages.Add("    { \"id\": " + q(id) + ", \"version\": " + q(version) + ", \"type\": " + q(type) + ", \"sha512\": " + q(sha512 ?? "") + " }");
+            if (lib.Element("runtime") is XElement runtime)
+                foreach (var a in runtime.Elements()) files.Add(Tuple.Create(Path.GetFileName(key(a)), id, version, (string)null));
+            if (lib.Element("runtimeTargets") is XElement rts)
+                foreach (var a in rts.Elements())
+                {
+                    string rid = (string)a.Element("rid");
+                    if ((string)a.Element("assetType") == "native" && wanted.Contains(rid)) files.Add(Tuple.Create(key(a), id, version, rid));
+                }
+        }
+        if (frameworkType == null) { Log.LogError("Proxy payload: the Proxy closure names no TSharpVision package."); return false; }
+        if (RequirePackageMode && frameworkType != "package")
+        { Log.LogError("Proxy payload: a published Workbench must carry the TSharpVision package (nuget.org), but the Proxy closure contains a project dependency. Rebuild using the central NuGet package references."); return false; }
+
+        // Restore provenance: sources and NuGet configuration files of the restore (project.assets.json).
+        var sources = new List<string>(); var configs = new List<string>();
+        if (!string.IsNullOrEmpty(AssetsFile) && File.Exists(AssetsFile))
+        {
+            var restore = json(AssetsFile).Element("project")?.Element("restore");
+            if (restore?.Element("sources") is XElement s) sources.AddRange(s.Elements().Select(key));
+            if (restore?.Element("configFilePaths") is XElement c) configs.AddRange(c.Elements().Select(e => (string)e));
+        }
+        var remote = sources.Where(s => s.StartsWith("http", StringComparison.OrdinalIgnoreCase)).ToList();
+        var foreign = remote.Where(s => !string.Equals(s.TrimEnd('/'), "https://api.nuget.org/v3/index.json", StringComparison.OrdinalIgnoreCase)).ToList();
+        if (RequirePackageMode && !AllowAnySource && foreign.Count > 0)
+        { Log.LogError("Proxy payload: the restore used package sources other than nuget.org (" + string.Join(", ", foreign) + "). Publish with the repository NuGet.config (nuget.org only), or set WorkbenchPayloadAllowAnySource=true."); return false; }
+
+        // The payload's Testing assembly must be the one this Workbench was built with (else the payload is stale).
+        string testing = Path.Combine(SourceDirectory, "TSharpWorkbench.Testing.dll");
+        if (!string.IsNullOrEmpty(WorkbenchTesting) && File.Exists(WorkbenchTesting) && File.Exists(testing) && hash(testing) != hash(WorkbenchTesting))
+        { Log.LogError("Proxy payload: " + testing + " differs from the Workbench's " + WorkbenchTesting + "; the Proxy output is stale (rebuild)."); return false; }
+
+        // Stage: copy what is listed, remove what is not (the folder belongs to the payload).
+        Directory.CreateDirectory(DestinationDirectory);
+        var staged = new SortedDictionary<string, Tuple<string, string, string>>(StringComparer.Ordinal);
+        staged[Deps] = Tuple.Create("TSharpWorkbench.Proxy", "", (string)null);
+        foreach (var f in files) staged[f.Item1.Replace('\\', '/')] = Tuple.Create(f.Item2, f.Item3, f.Item4);
+        foreach (var relative in staged.Keys)
+        {
+            string from = Path.Combine(SourceDirectory, relative), to = Path.Combine(DestinationDirectory, relative);
+            if (!File.Exists(from)) { Log.LogError("Proxy payload: " + relative + " is listed in " + Deps + " but missing in " + SourceDirectory + "."); return false; }
+            var fi = new FileInfo(from); var ti = new FileInfo(to);
+            if (!ti.Exists || ti.Length != fi.Length || ti.LastWriteTimeUtc != fi.LastWriteTimeUtc)
+            { Directory.CreateDirectory(Path.GetDirectoryName(to)); if (ti.Exists) ti.IsReadOnly = false; File.Copy(from, to, true); File.SetLastWriteTimeUtc(to, fi.LastWriteTimeUtc); }
+        }
+        string root = Path.GetFullPath(DestinationDirectory).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+        foreach (string existing in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
+        {
+            string relative = existing.Substring(root.Length).Replace('\\', '/');
+            if (relative != ManifestName && !staged.ContainsKey(relative)) { new FileInfo(existing).IsReadOnly = false; File.Delete(existing); }
+        }
+        foreach (string dir in Directory.GetDirectories(root, "*", SearchOption.AllDirectories).OrderByDescending(d => d.Length))
+            if (!Directory.EnumerateFileSystemEntries(dir).Any()) Directory.Delete(dir);
+
+        var sb = new StringBuilder();
+        sb.Append("{\n  \"schema\": \"tsw-proxy-payload/1\",\n");
+        sb.Append("  \"kind\": " + q(Kind) + ",\n  \"configuration\": " + q(Configuration) + ",\n  \"targetFramework\": " + q(targetName) + ",\n");
+        sb.Append("  \"frameworkMode\": " + q(frameworkType == "package" ? "package" : "source") + ",\n");
+        sb.Append("  \"rids\": [" + string.Join(", ", wanted.Where(allRids.Contains).Select(q)) + "],\n");
+        sb.Append("  \"closureRids\": [" + string.Join(", ", allRids.Select(q)) + "],\n");
+        sb.Append("  \"sources\": [" + string.Join(", ", sources.Select(q)) + "],\n");
+        sb.Append("  \"nugetConfigFiles\": [" + string.Join(", ", configs.Select(q)) + "],\n");
+        sb.Append("  \"packages\": [\n" + string.Join(",\n", packages) + "\n  ],\n");
+        sb.Append("  \"files\": [\n");
+        long total = 0; int n = 0;
+        foreach (var e in staged)
+        {
+            string path = Path.Combine(DestinationDirectory, e.Key); long size = new FileInfo(path).Length; total += size;
+            sb.Append((n++ == 0 ? "" : ",\n") + "    { \"path\": " + q(e.Key) + ", \"size\": " + size + ", \"sha256\": " + q(hash(path))
+                + ", \"package\": " + q(e.Value.Item1) + ", \"version\": " + q(e.Value.Item2) + ", \"rid\": " + q(e.Value.Item3) + " }");
+        }
+        sb.Append("\n  ]\n}\n");
+        File.WriteAllText(Path.Combine(DestinationDirectory, ManifestName), sb.ToString(), new UTF8Encoding(false));
+        Log.LogMessage(MessageImportance.High, "Proxy payload (" + Kind + "): " + staged.Count + " files, " + (total / 1048576.0).ToString("F1") + " MB, RIDs " + (wanted.Count == 0 ? "none" : string.Join(",", wanted.Where(allRids.Contains))) + " -> " + DestinationDirectory);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <PropertyGroup>
+    <WorkbenchPayloadRuntimeIdentifiers Condition="'$(WorkbenchPayloadRuntimeIdentifiers)' == '' And '$(RuntimeIdentifier)' != ''">$(RuntimeIdentifier)</WorkbenchPayloadRuntimeIdentifiers>
+    <WorkbenchPayloadRuntimeIdentifiers Condition="'$(WorkbenchPayloadRuntimeIdentifiers)' == ''">$(NETCoreSdkRuntimeIdentifier)</WorkbenchPayloadRuntimeIdentifiers>
+    <WorkbenchPayloadAllowAnySource Condition="'$(WorkbenchPayloadAllowAnySource)' == ''">false</WorkbenchPayloadAllowAnySource>
+  </PropertyGroup>
+
+  <!-- The Proxy's RID-agnostic output (portable deps.json). The Proxy is a build-order project reference; RuntimeIdentifier
+       and SelfContained of a RID-specific publish are removed so the portable output is located (the SDK builds library
+       references RID-agnostic as well; the Testing hash check above catches a stale output). -->
+  <Target Name="_LocateWorkbenchProxyOutput">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)TSharpWorkbench.Proxy/TSharpWorkbench.Proxy.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained;PublishDir;_IsPublishing">
+      <Output TaskParameter="TargetOutputs" ItemName="_WorkbenchProxyOutput" />
+    </MSBuild>
+    <PropertyGroup><_WorkbenchProxyDirectory>@(_WorkbenchProxyOutput->'%(RootDir)%(Directory)')</_WorkbenchProxyDirectory></PropertyGroup>
+  </Target>
+
+  <Target Name="StageWorkbenchProxyPayload" AfterTargets="Build" DependsOnTargets="_LocateWorkbenchProxyOutput">
+    <WriteWorkbenchProxyPayload SourceDirectory="$(_WorkbenchProxyDirectory)" DestinationDirectory="$([MSBuild]::NormalizeDirectory($(MSBuildProjectDirectory), $(OutDir), proxy-payload))" RuntimeIdentifiers="all"
+      Kind="build" Configuration="$(Configuration)" AssetsFile="$(ProjectAssetsFile)" WorkbenchTesting="$([MSBuild]::NormalizePath($(MSBuildProjectDirectory), $(OutDir), TSharpWorkbench.Testing.dll))" RequirePackageMode="false" AllowAnySource="true" />
+  </Target>
+
+  <Target Name="PublishWorkbenchProxyPayload" AfterTargets="Publish" DependsOnTargets="_LocateWorkbenchProxyOutput">
+    <WriteWorkbenchProxyPayload SourceDirectory="$(_WorkbenchProxyDirectory)" DestinationDirectory="$([MSBuild]::NormalizeDirectory($(MSBuildProjectDirectory), $(PublishDir), proxy-payload))" RuntimeIdentifiers="$(WorkbenchPayloadRuntimeIdentifiers)"
+      Kind="publish" Configuration="$(Configuration)" AssetsFile="$(ProjectAssetsFile)" WorkbenchTesting="$([MSBuild]::NormalizePath($(MSBuildProjectDirectory), $(PublishDir), TSharpWorkbench.Testing.dll))" RequirePackageMode="true" AllowAnySource="$(WorkbenchPayloadAllowAnySource)" />
+  </Target>
+</Project>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- Only an explicit local tooling pack opts in. Never in the release allowlist. -->
+    <IsPackable Condition="'$(PackDiagnosticTooling)' == 'true'">true</IsPackable>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Development-only logical capture and bounded local diagnostic protocol.</Description>
+  </PropertyGroup>
+  <ItemGroup><PackageReference Include="TSharpVision" /></ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Remove="PublicAPI.Shipped.txt;PublicAPI.Unshipped.txt" />
+    <PackageReference Remove="Microsoft.CodeAnalysis.PublicApiAnalyzers" />
+  </ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="TSharpWorkbench.Tests" /><InternalsVisibleTo Include="TSharpWorkbench.Proxy" /><InternalsVisibleTo Include="TSharpWorkbench.Proxy.Tests" /></ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="TSharpWorkbench.Diagnostics.NativePixels" />
+    <InternalsVisibleTo Include="TSharpWorkbench.Diagnostics.NativeHosts" />
+    <InternalsVisibleTo Include="TSharpWorkbench" />
+    <InternalsVisibleTo Include="ConsoleController" />
+    <InternalsVisibleTo Include="TSharpWorkbench.Diagnostics.NativePixels.Tests" />
+    <InternalsVisibleTo Include="TSharpWorkbench.Diagnostics.NativeHosts.Tests" />
+  </ItemGroup>
+</Project>

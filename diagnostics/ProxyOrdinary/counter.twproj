@@ -1,0 +1,18 @@
+{
+  "schema": "TSharpVision.TestWorkbench",
+  "version": 1,
+  "name": "Ordinary proxy counter",
+  "target": "bin/Release/net10.0/ProxyOrdinary.exe",
+  "outputRoot": "../../artifacts/proxy-ordinary",
+  "scenarioFiles": [
+    "counter.scenario.json",
+    "negative.scenario.json"
+  ],
+  "selectedIds": [
+    "proxy/counter"
+  ],
+  "screenSizes": [
+    "80x25"
+  ],
+  "proxyBackend": "NullDriver"
+}

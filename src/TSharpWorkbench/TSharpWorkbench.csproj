@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../TSharpWorkbench.Storage/TSharpWorkbench.Storage.csproj" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../TSharpWorkbench.Testing/TSharpWorkbench.Testing.csproj" /></ItemGroup>
+  <!-- The Proxy deployment unit travels with the Workbench (proxy-payload/), so Prepare target can deploy it
+       without a build or a script. Built, never referenced: the Workbench does not load the Proxy. -->
+  <ItemGroup><ProjectReference Include="../TSharpWorkbench.Proxy/TSharpWorkbench.Proxy.csproj" ReferenceOutputAssembly="false" Private="false" ExcludeAssets="all" PrivateAssets="all" /></ItemGroup>
+  <ItemGroup><PackageReference Include="TSharpVision.Drivers.Console" /></ItemGroup>
+  <!-- Linux/macOS: without a terminal driver the selector falls back to NullDriver and the TUI is invisible. -->
+  <ItemGroup><PackageReference Include="TSharpVision.Drivers.Terminal" /></ItemGroup>
+<ItemGroup><InternalsVisibleTo Include="TSharpWorkbench.Tests" /></ItemGroup>
+  <!-- Proxy-payload/ is staged from the Proxy's deps.json closure, with payload-manifest.json (provenance
+       and SHA-256 of every file), into the build output (every RID) and into dotnet publish output (the publish RID, else
+       the publishing SDK's RID; override with -p:WorkbenchPayloadRuntimeIdentifiers=all or a list). -->
+  <Import Project="../Workbench.ProxyPayload.targets" />
+  <ItemGroup>
+    <None Update="Help/TSharpWorkbench.hlp;Help/TSharpWorkbench.hlp.sha256" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="../../LICENSE" Link="LICENSE" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components\" />
+    <Folder Include="Windows\" />
+  </ItemGroup>
+</Project>

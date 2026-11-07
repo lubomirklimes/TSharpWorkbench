@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <!-- Shared product and fixture roots, independent of each project directory. -->
+    <WorkbenchProjectsRoot>$(MSBuildThisFileDirectory)</WorkbenchProjectsRoot>
+    <WorkbenchTestsRoot>$(MSBuildThisFileDirectory)../tests/</WorkbenchTestsRoot>
+  </PropertyGroup>
+</Project>

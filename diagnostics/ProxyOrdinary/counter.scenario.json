@@ -1,0 +1,55 @@
+{
+  "schema": "tsharpworkbench.scenario",
+  "version": 1,
+  "id": "proxy/counter",
+  "title": "Ordinary counter",
+  "description": "External input through the real application loop",
+  "backend": "proxy-logical",
+  "expectedOutcome": "passed",
+  "steps": [
+    {
+      "kind": "checkpoint",
+      "id": "initial",
+      "evidence": [
+        "view-tree"
+      ],
+      "assertions": [
+        {
+          "id": "zero",
+          "kind": "screen-contains",
+          "text": "Count: 0"
+        }
+      ]
+    },
+    {
+      "kind": "key",
+      "key": "kbF2"
+    },
+    {
+      "kind": "checkpoint",
+      "id": "one",
+      "assertions": [
+        {
+          "id": "one",
+          "kind": "screen-contains",
+          "text": "Count: 1"
+        }
+      ]
+    },
+    {
+      "kind": "key",
+      "key": "kbF2"
+    },
+    {
+      "kind": "checkpoint",
+      "id": "two",
+      "assertions": [
+        {
+          "id": "two",
+          "kind": "screen-contains",
+          "text": "Count: 2"
+        }
+      ]
+    }
+  ]
+}

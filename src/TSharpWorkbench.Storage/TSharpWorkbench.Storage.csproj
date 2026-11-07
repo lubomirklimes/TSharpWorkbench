@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup><Using Remove="TSharpVision;TSharpVision.Constants" /></ItemGroup>
+  <ItemGroup><PackageReference Include="Microsoft.Data.Sqlite" /></ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="TSharpWorkbench.Storage.Tests" /></ItemGroup>
+</Project>

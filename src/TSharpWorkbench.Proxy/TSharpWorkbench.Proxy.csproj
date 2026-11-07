@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The output is the deployable tooling unit: copy its exact framework/SDL runtime family
+       (including native assets). -->
+  <PropertyGroup><IsPackable>false</IsPackable><CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies></PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="TSharpVision" />
+    <ProjectReference Include="../TSharpWorkbench.Testing/TSharpWorkbench.Testing.csproj" />
+    <PackageReference Include="TSharpVision.Drivers.SDL" />
+    <!-- The Windows console backend (Win32ConsoleDriver) is a Proxy backend too; listing it makes the Proxy's
+         deps.json the complete closure Prepare target deploys. The Proxy code itself does not reference it. -->
+    <PackageReference Include="TSharpVision.Drivers.Console" />
+  </ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="TSharpWorkbench.Proxy.Tests" /></ItemGroup>
+  <!-- Borrowed SDL capture uses the
+       TSharpVision.Drivers.SDL diagnostic friend contract granted to this assembly identity. -->
+</Project>

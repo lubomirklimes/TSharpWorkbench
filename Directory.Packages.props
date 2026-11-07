@@ -1,0 +1,19 @@
+<Project>
+  <ItemGroup>
+    <PackageVersion Include="TSharpVision" Version="1.2.0" />
+    <PackageVersion Include="TSharpVision.Drivers.Console" Version="1.2.0" />
+    <PackageVersion Include="TSharpVision.Drivers.Terminal" Version="1.2.0" />
+    <PackageVersion Include="TSharpVision.Drivers.SDL" Version="1.2.0" />
+    <PackageVersion Include="TSharpVision.CodeEditor" Version="1.2.0" />
+    <PackageVersion Include="TSharpVision.HexView" Version="1.2.0" />
+    <PackageVersion Include="TSharpVision.TableView" Version="1.2.0" />
+    <PackageVersion Include="TSharpVision.Terminal" Version="1.2.0" />
+
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="Xunit.SkippableFact" Version="1.5.23" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+  </ItemGroup>
+</Project>

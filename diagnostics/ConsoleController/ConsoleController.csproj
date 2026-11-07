@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../src/TSharpWorkbench.Proxy/TSharpWorkbench.Proxy.csproj" />
+    <PackageReference Include="TSharpVision.Drivers.Console" /></ItemGroup>
+</Project>

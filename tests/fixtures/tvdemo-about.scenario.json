@@ -1,0 +1,23 @@
+{
+  "schema": "tsharpworkbench.scenario",
+  "version": 1,
+  "id": "release/tvdemo-about",
+  "title": "TVDemo About dialog",
+  "description": "Open the real TVDemo Help menu and verify its About dialog contents.",
+  "backend": "proxy-logical",
+  "expectedOutcome": "passed",
+  "steps": [
+    { "kind": "key", "key": "kbAltH" },
+    { "kind": "key", "key": "kbEnd" },
+    { "kind": "key", "key": "kbEnter" },
+    {
+      "kind": "checkpoint", "id": "about-open",
+      "retry": { "attempts": 10, "intervalMilliseconds": 100 },
+      "assertions": [
+        { "id": "about-title", "kind": "screen-contains", "text": "About TVDemo" },
+        { "id": "about-content", "kind": "screen-contains", "text": "A T# Vision sample application." }
+      ]
+    },
+    { "kind": "key", "key": "kbEsc" }
+  ]
+}

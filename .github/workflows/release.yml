@@ -1,0 +1,208 @@
+name: Application release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate selected source on main history
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Main ancestry and selected-source check (no checkout substitution)
+        run: ./scripts/ci-workbench.ps1 -Phase Source
+      - name: SemVer and tag correspondence
+        id: version
+        env:
+          RELEASE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+        run: ./scripts/ci-workbench.ps1 -Phase Version -Tag $env:RELEASE_TAG
+      - name: Resolve latest stable matching-major framework tag once
+        run: ./scripts/ci-workbench.ps1 -Phase FixtureResolve
+      - name: Pin fixture selection for all native candidate jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: fixture-selection
+          path: artifacts/github/fixture-selection.json
+          if-no-files-found: error
+          retention-days: 14
+
+  native:
+    name: Release candidate / ${{ matrix.rid }}
+    needs: validate
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2025
+            rid: win-x64
+          - runner: ubuntu-24.04
+            rid: linux-x64
+          - runner: macos-15-intel
+            rid: osx-x64
+          - runner: macos-15
+            rid: osx-arm64
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Download immutable candidate fixture selection
+        uses: actions/download-artifact@v4
+        with:
+          name: fixture-selection
+          path: artifacts/github
+      - name: Script policy checks
+        run: ./scripts/test-ci-workbench.ps1
+      - name: Locked portable restore
+        run: ./scripts/ci-workbench.ps1 -Phase Restore -Rid ${{ matrix.rid }}
+      - name: Release build
+        run: ./scripts/ci-workbench.ps1 -Phase Build -Rid ${{ matrix.rid }}
+      - name: Cross-platform headless tests (no skipped cases)
+        timeout-minutes: 8
+        run: ./scripts/ci-workbench.ps1 -Phase Test -Rid ${{ matrix.rid }}
+      - name: Build real TVDemo from the selected immutable source commit
+        if: matrix.rid == 'win-x64'
+        run: ./scripts/ci-workbench.ps1 -Phase Fixture -Rid ${{ matrix.rid }} -FixtureSelectionFile artifacts/github/fixture-selection.json
+      - name: One real TVDemo About scenario integration gate
+        if: matrix.rid == 'win-x64'
+        timeout-minutes: 10
+        run: ./scripts/ci-workbench.ps1 -Phase ReleaseGate -Rid ${{ matrix.rid }}
+      - name: Publish, archive, extract, verify hashes and CLI help
+        timeout-minutes: 10
+        run: ./scripts/ci-workbench.ps1 -Phase Package -Rid ${{ matrix.rid }}
+      - name: Candidate assets (one distinct upload per native target)
+        uses: actions/upload-artifact@v4
+        with:
+          name: candidate-${{ matrix.rid }}
+          path: artifacts/github/distribution/*
+          if-no-files-found: error
+          retention-days: 14
+      - name: Gate evidence and failure diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostics-${{ matrix.rid }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            artifacts/github/test-results/**
+            artifacts/github/release-*.json
+            artifacts/github/release-skips*.txt
+            artifacts/github/fixture.json
+            artifacts/github/fixture-selection.json
+            artifacts/github/tvdemo-batch.json
+            artifacts/github/tvdemo-results/**
+            artifacts/github/archive-smoke.*.txt
+            artifacts/github/rid-locks/**
+            artifacts/github/scenario-smoke/**
+            artifacts/github/*.log
+          if-no-files-found: warn
+          retention-days: 14
+
+  publish:
+    name: Approve and publish all platform assets
+    needs: [validate, native]
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: application-release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: candidate-*
+          path: candidate
+          merge-multiple: true
+      - name: Verify complete candidate set and publish once
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          APP_VERSION: ${{ needs.validate.outputs.version }}
+          PRERELEASE: ${{ needs.validate.outputs.prerelease }}
+          EXPECTED_COMMIT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$RELEASE_TAG" = "v$APP_VERSION"
+          cd candidate
+          assets=()
+          for rid in win-x64 linux-x64 osx-x64 osx-arm64; do
+            ext=tar.gz
+            if [ "$rid" = win-x64 ]; then ext=zip; fi
+            archive="TSharpWorkbench-$APP_VERSION-$rid.$ext"
+            manifest="TSharpWorkbench-$APP_VERSION-$rid.manifest.json"
+            test -f "$archive" && test -f "$manifest"
+            test "$(wc -l < "SHA256SUMS-$rid")" -eq 2
+            sha256sum --check "SHA256SUMS-$rid"
+            diff -u "SHA256SUMS-$rid" <(sha256sum "$archive" "$manifest")
+            assets+=("$archive" "$manifest")
+          done
+          python3 - <<'PY'
+          import json, os
+          selection = None
+          for rid in ('win-x64', 'linux-x64', 'osx-x64', 'osx-arm64'):
+              path = f"TSharpWorkbench-{os.environ['APP_VERSION']}-{rid}.manifest.json"
+              with open(path, encoding='utf-8-sig') as f:
+                  m = json.load(f)
+              assert m['rid'] == rid and m['version'] == os.environ['APP_VERSION']
+              assert m['commit'] == os.environ['EXPECTED_COMMIT'] and m['selfContained'] is False
+              current = m['fixtureSelection']
+              assert current['appVersion'] == os.environ['APP_VERSION']
+              assert current['policy'] == 'latest-stable-matching-major'
+              assert current['repository'] == 'https://github.com/lubomirklimes/TSharpVision.git'
+              if selection is None:
+                  selection = current
+              assert current == selection
+              if rid == 'win-x64':
+                  gate = m['releaseQualification']
+                  assert gate['status'] == 'PASSED' and gate['selection'] == selection
+                  assert gate['execution']['outcome'] == 'Passed' and gate['execution']['assertions'] >= 2
+                  assert gate['execution']['scenario'] == 'release/tvdemo-about'
+          PY
+          cat SHA256SUMS-* > SHA256SUMS
+          sha256sum --check SHA256SUMS
+          gh api --paginate "repos/$GH_REPO/releases?per_page=100" --jq '.[].tag_name' > existing-tags.txt
+          if grep -Fxq "$RELEASE_TAG" existing-tags.txt; then
+            echo "Release exists; refusing to overwrite $RELEASE_TAG" >&2
+            exit 1
+          fi
+          printf '%s\n' 'Framework-dependent Windows, Linux and macOS application archives; require matching .NET 10 runtime.' 'See README.release.md inside each archive and attached SHA256SUMS/manifests.' 'CLI smoke does not qualify interactive TUI, native graphics or physical input. macOS packages are unsigned and not notarized.' > notes.md
+          args=(--verify-tag --draft --title "TSharpWorkbench $APP_VERSION" --notes-file notes.md)
+          if [ "$PRERELEASE" = true ]; then args+=(--prerelease); fi
+          gh release create "$RELEASE_TAG" "${args[@]}"
+          gh release upload "$RELEASE_TAG" "${assets[@]}" SHA256SUMS
+          gh release edit "$RELEASE_TAG" --draft=false

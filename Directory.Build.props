@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <Version>1.2.0-preview.1</Version>
+    <InformationalVersion>$(Version)</InformationalVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.2.0.0</FileVersion>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <IsPackable>false</IsPackable>
+    <!-- Preserve configuration for Workbench helper projects absent from the solution. -->
+    <ShouldUnsetParentConfigurationAndPlatform>false</ShouldUnsetParentConfigurationAndPlatform>
+  </PropertyGroup>
+  <!-- Owned namespaces no longer inherit the framework namespace. -->
+  <ItemGroup><Using Include="TSharpVision" /><Using Include="TSharpVision.Constants" Alias="Constants" /></ItemGroup>
+</Project>

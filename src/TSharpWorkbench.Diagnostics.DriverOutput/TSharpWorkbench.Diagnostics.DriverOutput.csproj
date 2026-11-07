@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TSharpWorkbench.Diagnostics.DriverOutput</RootNamespace>
+    <AssemblyName>TSharpWorkbench.Diagnostics.DriverOutput</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!-- Layer B qualification: drives the real Console, Terminal and SDL translation code and
+       observes it through internal seams the drivers grant this assembly (InternalsVisibleTo). The
+       drivers themselves gain no dependency on this project or on TSharpWorkbench.Testing. -->
+  <ItemGroup>
+    <PackageReference Include="TSharpVision" />
+    <PackageReference Include="TSharpVision.Drivers.Console" />
+    <PackageReference Include="TSharpVision.Drivers.Terminal" />
+    <PackageReference Include="TSharpVision.Drivers.SDL" />
+    <!-- Expected logical screens are written as TVS1 beside the Layer B captures (same format as the logical baselines). -->
+    <ProjectReference Include="../TSharpWorkbench.Testing/TSharpWorkbench.Testing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TSharpWorkbench.Diagnostics.DriverOutput.Tests" />
+  </ItemGroup>
+
+  <ItemGroup><Compile Include="../WorkbenchPaths.cs" Link="WorkbenchPaths.cs" /></ItemGroup>
+</Project>

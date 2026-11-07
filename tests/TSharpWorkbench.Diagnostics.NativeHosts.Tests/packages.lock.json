@@ -1,0 +1,242 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "Microsoft.NET.Test.Sdk": {
+        "type": "Direct",
+        "requested": "[17.14.1, )",
+        "resolved": "17.14.1",
+        "contentHash": "HJKqKOE+vshXra2aEHpi2TlxYX7Z9VFYkr+E5rwEvHC8eIXiyO+K9kNm8vmNom3e2rA56WqxU+/N9NJlLGXsJQ==",
+        "dependencies": {
+          "Microsoft.CodeCoverage": "17.14.1",
+          "Microsoft.TestPlatform.TestHost": "17.14.1"
+        }
+      },
+      "xunit": {
+        "type": "Direct",
+        "requested": "[2.9.3, )",
+        "resolved": "2.9.3",
+        "contentHash": "TlXQBinK35LpOPKHAqbLY4xlEen9TBafjs0V5KnA4wZsoQLQJiirCR4CbIXvOH8NzkW4YeJKP5P/Bnrodm0h9Q==",
+        "dependencies": {
+          "xunit.analyzers": "1.18.0",
+          "xunit.assert": "2.9.3",
+          "xunit.core": "[2.9.3]"
+        }
+      },
+      "xunit.runner.visualstudio": {
+        "type": "Direct",
+        "requested": "[3.1.4, )",
+        "resolved": "3.1.4",
+        "contentHash": "5mj99LvCqrq3CNi06xYdyIAXOEh+5b33F2nErCzI5zWiDdLHXiPXEWFSUAF8zlIv0ZWqjZNCwHTQeAPYbF3pCg=="
+      },
+      "Xunit.SkippableFact": {
+        "type": "Direct",
+        "requested": "[1.5.23, )",
+        "resolved": "1.5.23",
+        "contentHash": "JlKobLTlsGcuJ8OtoodxL63bUagHSVBnF+oQ2GgnkwNqK+XYjeYyhQasULi5Ebx1MNDGNbOMplQYr89mR+nItQ==",
+        "dependencies": {
+          "Validation": "2.5.51",
+          "xunit.extensibility.execution": "2.4.0"
+        }
+      },
+      "Microsoft.CodeCoverage": {
+        "type": "Transitive",
+        "resolved": "17.14.1",
+        "contentHash": "pmTrhfFIoplzFVbhVwUquT+77CbGH+h4/3mBpdmIlYtBi9nAB+kKI6dN3A/nV4DFi3wLLx/BlHIPK+MkbQ6Tpg=="
+      },
+      "Microsoft.TestPlatform.ObjectModel": {
+        "type": "Transitive",
+        "resolved": "17.14.1",
+        "contentHash": "xTP1W6Mi6SWmuxd3a+jj9G9UoC850WGwZUps1Wah9r1ZxgXhdJfj1QqDLJkFjHDCvN42qDL2Ps5KjQYWUU0zcQ=="
+      },
+      "Microsoft.TestPlatform.TestHost": {
+        "type": "Transitive",
+        "resolved": "17.14.1",
+        "contentHash": "d78LPzGKkJwsJXAQwsbJJ7LE7D1wB+rAyhHHAaODF+RDSQ0NgMjDFkSA1Djw18VrxO76GlKAjRUhl+H8NL8Z+Q==",
+        "dependencies": {
+          "Microsoft.TestPlatform.ObjectModel": "17.14.1",
+          "Newtonsoft.Json": "13.0.3"
+        }
+      },
+      "Newtonsoft.Json": {
+        "type": "Transitive",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+      },
+      "SDL3-CS": {
+        "type": "Transitive",
+        "resolved": "3.4.10.2",
+        "contentHash": "5xMJPCy2Vfwz/zwxPAl7/rVTOZoRvONUl7qUuAtjOvYWU2j8xbPLfUsG/RaRDOCyP+Hsgar/JZD4ml8OIEXlOQ=="
+      },
+      "SDL3-CS.Linux": {
+        "type": "Transitive",
+        "resolved": "3.4.10.2",
+        "contentHash": "D7frFyd1uatbnfAHGd19E0PKYgVH0UWv2ierd0oH55fgZHiePy2KuD/ffKa1HlyQOdNd47frm7jh1p9BJk+3sw=="
+      },
+      "SDL3-CS.Linux.Shadercross": {
+        "type": "Transitive",
+        "resolved": "3.0.0.2",
+        "contentHash": "IBMBqjrw7hF9yAGGC8iYwnt6mTPsPxZGWp3dYTc3lPeA1yzeIYWFe8rZwW5ugx2XYpyyGTjscSUHnWg3Lih4hQ=="
+      },
+      "SDL3-CS.Linux.TTF": {
+        "type": "Transitive",
+        "resolved": "3.2.2.2",
+        "contentHash": "JGq0Y60A1SIQE6XKSAhyBPHd20AybRBnGcKRAV0dAE6we6C2ljjXMH8plMfoloX3OocIXxqeslWflWf7IDVZ8A=="
+      },
+      "SDL3-CS.MacOS": {
+        "type": "Transitive",
+        "resolved": "3.4.10.2",
+        "contentHash": "rZoKVvhQz7t0SIYWTmdvsUQw/zl7IlyX7lzo5DTNarFNGARsMbMzArZv4CNS64AWDQRwXUuyMmK5qpE5fuG1Mg=="
+      },
+      "SDL3-CS.MacOS.Shadercross": {
+        "type": "Transitive",
+        "resolved": "3.0.0.2",
+        "contentHash": "voJSDiDycK3UYX2Osge1kKlrNzsyVZ2k1SHURXrUU+aDk06rGdza7eEld+1flZj4gY0dawTeQ4SHXuxQrSCE9w=="
+      },
+      "SDL3-CS.MacOS.TTF": {
+        "type": "Transitive",
+        "resolved": "3.2.2.2",
+        "contentHash": "qch4Iwo4pbbrVfuh1sySgGiGygk6e+DzFuQYGVUlBzHDpK/8WBP0JgG9QZN0Uj6l+sPKJ4Jz7zr1qkFJf4OFmA=="
+      },
+      "SDL3-CS.Windows": {
+        "type": "Transitive",
+        "resolved": "3.4.10.2",
+        "contentHash": "IYOS2EuUFtLfseJPl+xxs7QtpA3ZFoVQZWskX9NZSHcUurtEq5fOlLnceCGhH9AIffIbTicNuoGBTpfB9KHvig=="
+      },
+      "SDL3-CS.Windows.Shadercross": {
+        "type": "Transitive",
+        "resolved": "3.0.0.2",
+        "contentHash": "CSYgW//6tr/UAR8iSWQ2VWxnhne+4Uvwlw7KYdOL1heddOZ/y++R/gOAZzEopVWAINjPvfBf8tlDefOvZxPiaA=="
+      },
+      "SDL3-CS.Windows.TTF": {
+        "type": "Transitive",
+        "resolved": "3.2.2.2",
+        "contentHash": "i/zzBPiyWMy9pFDuOwGPw9It3aV8GlVyP3cvHvwlG+7ytt3QwF59zAVF6VNMYlzgnJ5fKReWCvYgRBOZd9rJtw=="
+      },
+      "Validation": {
+        "type": "Transitive",
+        "resolved": "2.5.51",
+        "contentHash": "g/Aug7PVWaenlJ0QUyt/mEetngkQNsMCuNeRVXbcJED1nZS7JcK+GTU4kz3jcQ7bFuKfi8PF4ExXH7XSFNuSLQ=="
+      },
+      "xunit.abstractions": {
+        "type": "Transitive",
+        "resolved": "2.0.3",
+        "contentHash": "pot1I4YOxlWjIb5jmwvvQNbTrZ3lJQ+jUGkGjWE3hEFM0l5gOnBWS+H3qsex68s5cO52g+44vpGzhAt+42vwKg=="
+      },
+      "xunit.analyzers": {
+        "type": "Transitive",
+        "resolved": "1.18.0",
+        "contentHash": "OtFMHN8yqIcYP9wcVIgJrq01AfTxijjAqVDy/WeQVSyrDC1RzBWeQPztL49DN2syXRah8TYnfvk035s7L95EZQ=="
+      },
+      "xunit.assert": {
+        "type": "Transitive",
+        "resolved": "2.9.3",
+        "contentHash": "/Kq28fCE7MjOV42YLVRAJzRF0WmEqsmflm0cfpMjGtzQ2lR5mYVj1/i0Y8uDAOLczkL3/jArrwehfMD0YogMAA=="
+      },
+      "xunit.core": {
+        "type": "Transitive",
+        "resolved": "2.9.3",
+        "contentHash": "BiAEvqGvyme19wE0wTKdADH+NloYqikiU0mcnmiNyXaF9HyHmE6sr/3DC5vnBkgsWaE6yPyWszKSPSApWdRVeQ==",
+        "dependencies": {
+          "xunit.extensibility.core": "[2.9.3]",
+          "xunit.extensibility.execution": "[2.9.3]"
+        }
+      },
+      "xunit.extensibility.core": {
+        "type": "Transitive",
+        "resolved": "2.9.3",
+        "contentHash": "kf3si0YTn2a8J8eZNb+zFpwfoyvIrQ7ivNk5ZYA5yuYk1bEtMe4DxJ2CF/qsRgmEnDr7MnW1mxylBaHTZ4qErA==",
+        "dependencies": {
+          "xunit.abstractions": "2.0.3"
+        }
+      },
+      "xunit.extensibility.execution": {
+        "type": "Transitive",
+        "resolved": "2.9.3",
+        "contentHash": "yMb6vMESlSrE3Wfj7V6cjQ3S4TXdXpRqYeNEI3zsX31uTsGMJjEw6oD5F5u1cHnMptjhEECnmZSsPxB6ChZHDQ==",
+        "dependencies": {
+          "xunit.extensibility.core": "[2.9.3]"
+        }
+      },
+      "tsharpworkbench.diagnostics.driveroutput": {
+        "type": "Project",
+        "dependencies": {
+          "TSharpVision": "[1.2.0, )",
+          "TSharpVision.Drivers.Console": "[1.2.0, )",
+          "TSharpVision.Drivers.SDL": "[1.2.0, )",
+          "TSharpVision.Drivers.Terminal": "[1.2.0, )",
+          "TSharpWorkbench.Testing": "[1.0.0, )"
+        }
+      },
+      "tsharpworkbench.diagnostics.nativehosts": {
+        "type": "Project",
+        "dependencies": {
+          "TSharpVision": "[1.2.0, )",
+          "TSharpVision.Drivers.Console": "[1.2.0, )",
+          "TSharpVision.Drivers.Terminal": "[1.2.0, )",
+          "TSharpWorkbench.Diagnostics.DriverOutput": "[1.0.0, )",
+          "TSharpWorkbench.Diagnostics.NativePixels": "[1.0.0, )",
+          "TSharpWorkbench.Testing": "[1.0.0, )"
+        }
+      },
+      "tsharpworkbench.diagnostics.nativepixels": {
+        "type": "Project",
+        "dependencies": {
+          "TSharpVision": "[1.2.0, )",
+          "TSharpVision.Drivers.SDL": "[1.2.0, )",
+          "TSharpWorkbench.Diagnostics.DriverOutput": "[1.0.0, )",
+          "TSharpWorkbench.Testing": "[1.0.0, )"
+        }
+      },
+      "tsharpworkbench.testing": {
+        "type": "Project",
+        "dependencies": {
+          "TSharpVision": "[1.2.0, )"
+        }
+      },
+      "TSharpVision": {
+        "type": "CentralTransitive",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "4tPGhnEfMOk4LOHMYbKe1s/ZXEqvbJD207u3yXe00/p/9vyXI0Yd4KsO++wYz3x+P0Zk3zUId6m8DbD3abwzRw=="
+      },
+      "TSharpVision.Drivers.Console": {
+        "type": "CentralTransitive",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "Yn9RfeoAPhbTGisuUXzw7feIjIWKqjmBLuloaMrBpAvgccTsReAFJPbe7x9bZYMhOD5kh6+EyiKL73l4yJYbjA==",
+        "dependencies": {
+          "TSharpVision": "1.2.0"
+        }
+      },
+      "TSharpVision.Drivers.SDL": {
+        "type": "CentralTransitive",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "L5BhsROHfUfJwycvn1Z6wZ/mb73DGIS/1mv8/spvvdHJ9q1aOAi8aBzMstD10wMFR8j6e4Ttl3df2AMY4ew/WA==",
+        "dependencies": {
+          "SDL3-CS": "3.4.10.2",
+          "SDL3-CS.Linux": "3.4.10.2",
+          "SDL3-CS.Linux.Shadercross": "3.0.0.2",
+          "SDL3-CS.Linux.TTF": "3.2.2.2",
+          "SDL3-CS.MacOS": "3.4.10.2",
+          "SDL3-CS.MacOS.Shadercross": "3.0.0.2",
+          "SDL3-CS.MacOS.TTF": "3.2.2.2",
+          "SDL3-CS.Windows": "3.4.10.2",
+          "SDL3-CS.Windows.Shadercross": "3.0.0.2",
+          "SDL3-CS.Windows.TTF": "3.2.2.2",
+          "TSharpVision": "1.2.0"
+        }
+      },
+      "TSharpVision.Drivers.Terminal": {
+        "type": "CentralTransitive",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "joCOBT0JaLBNy1BpKQokz9hKQ/f4Zmzpy7xk1EpTGAhfAcjHynEyIwXklb5FB/4kOBPXCk0a3okx6F11XcDoQQ==",
+        "dependencies": {
+          "TSharpVision": "1.2.0"
+        }
+      }
+    }
+  }
+}

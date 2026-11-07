@@ -1,0 +1,10 @@
+// Synthetic test target for catalog capacity tests: a bare TApplication (no window, no menu items)
+// served by the generic TestTargetHost. Not Commander and not the sample target.
+using TSharpVision;
+using TSharpWorkbench.Testing;
+
+int count = int.Parse(Environment.GetEnvironmentVariable("CATALOG_CAPACITY_COUNT")!);
+var scenarios = Enumerable.Range(0, count).Select(i => new TestScenario($"synthetic/{i:000}", $"Scenario {i}",
+    i % 2 == 0 ? "Synthetic/Even" : "Synthetic/Odd", new string('d', 400)).Checkpoint("initial", c => c.NoModalView)).ToList();
+if (!TestTargetHost.IsActivated(args)) return 2;
+return TestTargetHost.Run(new TestTargetDefinition { Scenarios = scenarios, CreateApplication = _ => new TApplication() });

@@ -1,0 +1,6 @@
+<Project>
+  <!-- RID lock expansion stays in ignored CI output; portable checked-in locks remain immutable. -->
+  <PropertyGroup Condition="'$(CiRidLockRoot)' != ''">
+    <NuGetLockFilePath>$(CiRidLockRoot)/$(MSBuildProjectName).lock.json</NuGetLockFilePath>
+  </PropertyGroup>
+</Project>

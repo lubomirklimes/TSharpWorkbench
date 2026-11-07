@@ -1,0 +1,116 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "TSharpVision": {
+        "type": "Direct",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "4tPGhnEfMOk4LOHMYbKe1s/ZXEqvbJD207u3yXe00/p/9vyXI0Yd4KsO++wYz3x+P0Zk3zUId6m8DbD3abwzRw=="
+      },
+      "TSharpVision.Drivers.SDL": {
+        "type": "Direct",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "L5BhsROHfUfJwycvn1Z6wZ/mb73DGIS/1mv8/spvvdHJ9q1aOAi8aBzMstD10wMFR8j6e4Ttl3df2AMY4ew/WA==",
+        "dependencies": {
+          "SDL3-CS": "3.4.10.2",
+          "SDL3-CS.Linux": "3.4.10.2",
+          "SDL3-CS.Linux.Shadercross": "3.0.0.2",
+          "SDL3-CS.Linux.TTF": "3.2.2.2",
+          "SDL3-CS.MacOS": "3.4.10.2",
+          "SDL3-CS.MacOS.Shadercross": "3.0.0.2",
+          "SDL3-CS.MacOS.TTF": "3.2.2.2",
+          "SDL3-CS.Windows": "3.4.10.2",
+          "SDL3-CS.Windows.Shadercross": "3.0.0.2",
+          "SDL3-CS.Windows.TTF": "3.2.2.2",
+          "TSharpVision": "1.2.0"
+        }
+      },
+      "SDL3-CS": {
+        "type": "Transitive",
+        "resolved": "3.4.10.2",
+        "contentHash": "5xMJPCy2Vfwz/zwxPAl7/rVTOZoRvONUl7qUuAtjOvYWU2j8xbPLfUsG/RaRDOCyP+Hsgar/JZD4ml8OIEXlOQ=="
+      },
+      "SDL3-CS.Linux": {
+        "type": "Transitive",
+        "resolved": "3.4.10.2",
+        "contentHash": "D7frFyd1uatbnfAHGd19E0PKYgVH0UWv2ierd0oH55fgZHiePy2KuD/ffKa1HlyQOdNd47frm7jh1p9BJk+3sw=="
+      },
+      "SDL3-CS.Linux.Shadercross": {
+        "type": "Transitive",
+        "resolved": "3.0.0.2",
+        "contentHash": "IBMBqjrw7hF9yAGGC8iYwnt6mTPsPxZGWp3dYTc3lPeA1yzeIYWFe8rZwW5ugx2XYpyyGTjscSUHnWg3Lih4hQ=="
+      },
+      "SDL3-CS.Linux.TTF": {
+        "type": "Transitive",
+        "resolved": "3.2.2.2",
+        "contentHash": "JGq0Y60A1SIQE6XKSAhyBPHd20AybRBnGcKRAV0dAE6we6C2ljjXMH8plMfoloX3OocIXxqeslWflWf7IDVZ8A=="
+      },
+      "SDL3-CS.MacOS": {
+        "type": "Transitive",
+        "resolved": "3.4.10.2",
+        "contentHash": "rZoKVvhQz7t0SIYWTmdvsUQw/zl7IlyX7lzo5DTNarFNGARsMbMzArZv4CNS64AWDQRwXUuyMmK5qpE5fuG1Mg=="
+      },
+      "SDL3-CS.MacOS.Shadercross": {
+        "type": "Transitive",
+        "resolved": "3.0.0.2",
+        "contentHash": "voJSDiDycK3UYX2Osge1kKlrNzsyVZ2k1SHURXrUU+aDk06rGdza7eEld+1flZj4gY0dawTeQ4SHXuxQrSCE9w=="
+      },
+      "SDL3-CS.MacOS.TTF": {
+        "type": "Transitive",
+        "resolved": "3.2.2.2",
+        "contentHash": "qch4Iwo4pbbrVfuh1sySgGiGygk6e+DzFuQYGVUlBzHDpK/8WBP0JgG9QZN0Uj6l+sPKJ4Jz7zr1qkFJf4OFmA=="
+      },
+      "SDL3-CS.Windows": {
+        "type": "Transitive",
+        "resolved": "3.4.10.2",
+        "contentHash": "IYOS2EuUFtLfseJPl+xxs7QtpA3ZFoVQZWskX9NZSHcUurtEq5fOlLnceCGhH9AIffIbTicNuoGBTpfB9KHvig=="
+      },
+      "SDL3-CS.Windows.Shadercross": {
+        "type": "Transitive",
+        "resolved": "3.0.0.2",
+        "contentHash": "CSYgW//6tr/UAR8iSWQ2VWxnhne+4Uvwlw7KYdOL1heddOZ/y++R/gOAZzEopVWAINjPvfBf8tlDefOvZxPiaA=="
+      },
+      "SDL3-CS.Windows.TTF": {
+        "type": "Transitive",
+        "resolved": "3.2.2.2",
+        "contentHash": "i/zzBPiyWMy9pFDuOwGPw9It3aV8GlVyP3cvHvwlG+7ytt3QwF59zAVF6VNMYlzgnJ5fKReWCvYgRBOZd9rJtw=="
+      },
+      "tsharpworkbench.diagnostics.driveroutput": {
+        "type": "Project",
+        "dependencies": {
+          "TSharpVision": "[1.2.0, )",
+          "TSharpVision.Drivers.Console": "[1.2.0, )",
+          "TSharpVision.Drivers.SDL": "[1.2.0, )",
+          "TSharpVision.Drivers.Terminal": "[1.2.0, )",
+          "TSharpWorkbench.Testing": "[1.0.0, )"
+        }
+      },
+      "tsharpworkbench.testing": {
+        "type": "Project",
+        "dependencies": {
+          "TSharpVision": "[1.2.0, )"
+        }
+      },
+      "TSharpVision.Drivers.Console": {
+        "type": "CentralTransitive",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "Yn9RfeoAPhbTGisuUXzw7feIjIWKqjmBLuloaMrBpAvgccTsReAFJPbe7x9bZYMhOD5kh6+EyiKL73l4yJYbjA==",
+        "dependencies": {
+          "TSharpVision": "1.2.0"
+        }
+      },
+      "TSharpVision.Drivers.Terminal": {
+        "type": "CentralTransitive",
+        "requested": "[1.2.0, )",
+        "resolved": "1.2.0",
+        "contentHash": "joCOBT0JaLBNy1BpKQokz9hKQ/f4Zmzpy7xk1EpTGAhfAcjHynEyIwXklb5FB/4kOBPXCk0a3okx6F11XcDoQQ==",
+        "dependencies": {
+          "TSharpVision": "1.2.0"
+        }
+      }
+    }
+  }
+}

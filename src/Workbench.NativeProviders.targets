@@ -1,0 +1,17 @@
+<Project>
+  <!-- Host-only opt-in: list provider csproj paths as WorkbenchNativeProviderProject.
+       Build order is explicit; provider outputs (including helper apphosts/deps/runtimeconfig/native assets)
+       are staged beside the host. Import in the target application, never in Testing itself. -->
+  <ItemGroup>
+    <ProjectReference Include="@(WorkbenchNativeProviderProject)" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <Target Name="StageWorkbenchNativeProviders" AfterTargets="Build" Condition="'@(WorkbenchNativeProviderProject)' != ''">
+    <MSBuild Projects="@(WorkbenchNativeProviderProject)" Targets="GetTargetPath" Properties="Configuration=$(Configuration)">
+      <Output TaskParameter="TargetOutputs" ItemName="_WorkbenchProviderOutput" />
+    </MSBuild>
+    <ItemGroup>
+      <_WorkbenchProviderFile Include="%(_WorkbenchProviderOutput.RootDir)%(_WorkbenchProviderOutput.Directory)**/*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_WorkbenchProviderFile)" DestinationFiles="@(_WorkbenchProviderFile->'$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

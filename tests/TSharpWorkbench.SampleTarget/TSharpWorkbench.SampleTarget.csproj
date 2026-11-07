@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Workbench-owned diagnostic test fixture. Development tooling only; never packed. -->
+  <PropertyGroup><OutputType>Exe</OutputType><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../src/TSharpWorkbench.Testing/TSharpWorkbench.Testing.csproj" /></ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="TSharpWorkbench.Tests" /></ItemGroup>
+  <ItemGroup><Using Include="TSharpWorkbench.Testing" /></ItemGroup>
+</Project>

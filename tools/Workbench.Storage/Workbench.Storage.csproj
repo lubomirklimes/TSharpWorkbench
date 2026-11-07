@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup><Using Remove="TSharpVision;TSharpVision.Constants" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../../src/TSharpWorkbench.Storage/TSharpWorkbench.Storage.csproj" /></ItemGroup>
+</Project>

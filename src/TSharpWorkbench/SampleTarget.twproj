@@ -1,0 +1,21 @@
+{
+  "schema": "TSharpVision.TestWorkbench",
+  "version": 1,
+  "name": "SampleTarget",
+  "target": "../../tests/TSharpWorkbench.SampleTarget/bin/Debug/net10.0/TSharpWorkbench.SampleTarget.exe",
+  "outputRoot": "../../artifacts/project-runs",
+  "selectedIds": ["sample/status/context"],
+  "group": "status",
+  "search": "",
+  "collapsedGroups": ["selftest"],
+  "mode": "NullDriver",
+  "runScope": "selected",
+  "screenSizes": ["80x25"],
+  "customWidth": 100,
+  "customHeight": 30,
+  "baselineStore": null,
+  "inspect": "declared",
+  "allow": [],
+  "timeout": null,
+  "scenarioTimeout": null
+}

@@ -1,0 +1,340 @@
+[
+  {
+    "Id": 1,
+    "Title": "TSharpWorkbench Help",
+    "Paragraphs": [
+      "Choose a topic with Tab / Shift+Tab, then Enter. Scroll with arrows or PgUp/PgDn. Alt+I or F1 returns to Index; Backspace returns to the previous topic; Esc closes help.",
+      "F1 in Workbench opens help for the active window or dialog. Each topic below comes from the same installed help file."
+    ],
+    "Links": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  {
+    "Id": 2,
+    "Title": "Start Page",
+    "Paragraphs": [
+      "Open a recent project with Up/Down and Enter. Ctrl+O opens a project file; Ctrl+N creates an untitled project. Esc closes the Start Page without exiting Workbench.",
+      "A project stores target, scenario files, run settings and baseline location. Recent projects and local view preferences are kept in user settings.",
+      "Create or open a .tsw archive. Recover resumes retained working changes. Discard quarantines them, and Cancel leaves them available for later."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 3,
+    "Title": "Project Overview and Test Explorer",
+    "Paragraphs": [
+      "Ctrl+N, Ctrl+O and Ctrl+S create, open and save native .tsw archives. Save As switches the active project. Project close offers Save, Discard or Cancel; Cancel is the default.",
+      "Project > Properties... (F3 or Alt+1) opens the read-only Project Information dialog. Ctrl+P shows complete paths and Esc closes the dialog. Settings > Project... (F4) edits configuration. Settings > Environments... manages profiles. Window opens Test Explorer, Scenario Manager, Run Explorer, Results, Baseline Explorer and Messages. Working windows remain open while you switch; closing one does not close the project. Child editing and confirmation dialogs are modal.",
+      "Test Explorer defines independent Tests with a title, description, documented preconditions, exactly one Scenario and one or more Environments. Space marks Tests; Tests menu marking commands use the same marks. F5 opens Configure Test Run, including from Test Explorer. Mode filters Black-Box and White-Box execution. Description and Preconditions use multiline editors: Enter inserts a newline, Tab and Shift+Tab change fields, Alt+S saves, Esc or Alt+C cancels. Scenario labels show their original IDs. Environments are marked inline with Space or a mouse click on the row, and the selected count updates. A double-click does not toggle the selection twice.",
+      "Run Explorer and Overview summarize Overall outcomes. Functional success with missing, mismatched or invalid visual baselines is not Overall Passed. Project Save commits run evidence and adopted baselines inside the archive."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 4,
+    "Title": "Project Properties and Environments",
+    "Paragraphs": [
+      "Settings > Project... (F4) opens the editable Project Properties dialog. Project > Properties... (F3) opens Project Information. Arguments are an editable JSON string array, for example [\"--verbose\"]. Process environment is a JSON string object, for example {\"NAME\":\"value\"}. Cancel changes nothing. These are target process settings, separate from Environment profiles.",
+      "Environment Manager is modeless; New and Edit open modal Environment Properties. Current host is portable; explicit Windows, Linux and macOS remain fixed. Foreign OS profiles do not execute locally. Capture choices depend on driver. Select a preset grid or type validated WIDTHxHEIGHT. Enabled is a checkbox.",
+      "Choosing a different manifest in native Project Properties asks to adopt it. Adopt copies the store into the project and enables visual comparison, using the same operation as Baseline Explorer. Cancel leaves Properties unchanged. Source files remain intact; Project Save commits changes."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 5,
+    "Title": "Target diagnostics / Verify / Prepare",
+    "Paragraphs": [
+      "Settings > Target Diagnostics... reports readiness and compatibility. Verify target runs the target probe and reports what the installed target actually supports. Read the detailed finding before selecting a repair.",
+      "Prepare a copy is the recommended mode: copy the entire application into a new or empty destination and deploy Workbench support there. Browse or New folder helps choose the destination. The original remains available.",
+      "Fix original target adds only missing Workbench files after explicit confirmation. It is not a general replacement or upgrade tool. Another framework version is refused; the same version from another build (FW003, informational) is accepted and checked by Verify.",
+      "Compatibility explains the detected version. Do not manually mix framework assemblies to clear a warning. Resolve missing executable, unavailable output directory or missing dependencies and Verify again."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 6,
+    "Title": "Scenario Manager",
+    "Paragraphs": [
+      "Alt+2 opens the Scenario library. Managed JSON documents are editable. Discovered compiled scenarios are read-only. The list uses scenario titles and stable IDs. Validate reports document, binding and deployment problems in Messages. Refresh with F2 after changing the target.",
+      "Select a scenario and choose Link Test to assign it through New Test, then select one or more Environments. Compiled IDs remain stable; no compiled source file is rewritten. Unavailable scenarios cannot run.",
+      "New creates a managed scenario. Add files imports JSON into native projects. Enter opens managed files in the editor, or explains a compiled scenario. Remove does not delete the source file."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 7,
+    "Title": "Scenario Editor",
+    "Paragraphs": [
+      "Edit ordered steps, their fields and scenario metadata. Ins creates a step; Enter or a double-click edits; Del or Alt+Y deletes; Alt+C duplicates; Alt+U/Alt+D moves a step; Shift+Up/Down selects a range.",
+      "Alt+M opens metadata; Alt+V validates without changing selection or focus; Ctrl+S saves; Alt+A saves as; Alt+L opens the external editor. Problems identify their JSON location, such as $.steps[i].field.",
+      "The window title shows the scenario name and ID. The summary uses read-only fields and Saved, Valid and Read-only indicators; clicking them does not change the document. The ordered list keeps actions and checkpoints interleaved. Tab reaches selected-step fields and visible problems; scroll the fields to read complete values. Ctrl+P opens Scenario Information with the full document path and document details. The right pane contains only the selected step properties. A checkpoint with zero assertions is capture only.",
+      "Checkpoint: use a stable, unique ID. In Black-Box Mode this can name any stable screen; it does not have to match a fixture expectation. White-Box contract checkpoints must be advertised by the fixture; refresh an unavailable fixture catalog with F2. Legacy fixtures keep their existing checkpoint rules. Evidence view-tree, menu and status are optional additional captures. With both retry fields empty the effective default is 5 attempts at 250 ms intervals. Otherwise enter both: attempts 1..20 and interval 0..30000 ms. Assertions are explicit: nothing is added automatically. Add, Edit and Remove keep their list order; scroll to reach more assertions. Note is multiline: Enter inserts a newline, Tab changes fields; OK accepts and Cancel/Esc discards the draft.",
+      "Add Step keeps kinds in schema order. In Black-Box Mode, keys, text and mouse input go to the real application; checkpoints capture and assert. In White-Box Mode, action steps run registered fixture actions and checkpoints name its expectations. Enter chooses the focused kind; a double-click chooses the clicked kind. Choose accepts and Cancel/Esc returns without adding a step.",
+      "Scenario Metadata: Description is multiline; Enter inserts a newline, Tab and Shift+Tab move between fields. OK accepts the draft; Cancel or Esc discards it. Black-Box uses an ordinary application; White-Box names a diagnostic fixture. Select an advertised fixture with Enter, or enter its existing ID. An unavailable catalog requires refreshing scenarios (F2); it does not select a fixture for you. Expected Failed means deliberate failure. An implicit grid uses the fixture or standard range. Explicit grid keeps positive Minimum/Maximum Width and Height and a comma-separated Defaults list such as 80x25, 140x40. Schema version and existing $schema or other properties are preserved. Validation messages appear above OK/Cancel.",
+      "Invalid source files open read-only and are never written. If a file changes externally, Reload or Save as avoids overwriting those changes. Esc closes with an unsaved-changes decision when needed.",
+      "Record opens Record Interaction. Key names in key steps use TSharpVision constants such as kbEnter or kbF10. Assertions and metadata dialogs use this same topic.",
+      "In the Scenario Editor, Ctrl+S saves the managed working document. Project Save packages it. External editor opens a separate checkout. Save and close the external editor before explicitly importing. Canceled checkouts are retained.",
+      "Assertion layout-audit checks the layout of one captured state in one step. Profile geometry (the default) finds views off the screen or outside their window, overlapping controls, a hidden or clipped focused control, labels colliding with controls, and button captions, window titles, labels, static texts and check box items that do not fit. Profile ux adds advisory checks (label and column alignment, row spacing, button rows, proportions, unused space, balance); strict makes those advisories fail too. Without a scope it audits the modal view or the whole screen. You can run only some rules and suppress a rule, optionally for one view, with a written reason. Its severity is warning unless you set error."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 8,
+    "Title": "Recorder / Record Interaction",
+    "Paragraphs": [
+      "Recording captures input made in the target application own Console or SDL window. Keys pressed in Workbench are not recorded.",
+      "Tab to Start; Alt+A pauses, Alt+U resumes, Alt+O stops and Alt+C cancels. Esc returns to the editor.",
+      "Review the recorded sequence before applying it: Alt+N appends, Alt+L inserts at the selection, Alt+E replaces the selection and Alt+D discards. Save the scenario separately after applying.",
+      "Smart capture (check box in the recording window, saved in your Workbench settings) is ON by default; once you turn it off, it stays off. The environment variable TSW_SMART_RECORDER=1 or 0 overrides the setting. With it, Ctrl+Shift+click picks a control and Ctrl+Shift+drag a region in the target; Pick (Alt+K) arms a one-shot pick. Picks are never recorded as input. Windows Terminal may keep Ctrl+Shift+click for its own text selection: use Pick there. Qualified on the Win32 Console window with injected input; SDL and SDL GPU windows are not qualified.",
+      "Smart capture needs the Workbench Proxy of this Workbench in the target folder. If the deployed Proxy is older, Start asks first: Fix Issues shows what would be replaced and copies it only after your approval (with a backup); Start inputs only records keys and mouse for this recording only; Cancel starts nothing. It never falls back to input only silently.",
+      "After Stop, Review... (Alt+V) opens by itself when Smart capture proposed checkpoints (not after Cancel, a failure or when the target ended the recording). It lists the proposed checkpoints and the assertions suggested for each. Safe high-confidence items are preselected; everything else (lower confidence, not checkable, withheld, cannot be placed) is not. You can deselect anything. Nothing is inserted or saved until you choose Append, Insert at selection or Replace selection.",
+      "If proposals are still not accepted when you choose Append, Insert at selection or Replace selection, a dialog says what would be left out: Back to Review (the default) lets you accept them, Insert accepted only goes ahead with the inputs and the accepted proposals, and Cancel changes nothing. Items that can never be inserted (not checkable, withheld, cannot be placed) are counted separately. For Replace selection this dialog is also the Replace confirmation.",
+      "Smart capture also suggests one layout audit (assertion layout-audit, profile ux) for each recorded state with a view tree: geometry and text fit plus UX heuristics as warnings. It is not suggested while a menu is open or for a screen that is already audited at an earlier checkpoint; Review says why. A layout audit that already finds problems in the recorded state is shown with its findings but is not preselected.",
+      "In Review, Space accepts or rejects the focused proposal, or selects or deselects the focused assertion; Enter (or Edit) opens the step editor for a checkpoint or the assertion editor for an assertion. Accept all accepts every proposal that can be placed; Reject all rejects every proposal. [-] marks rows that cannot be chosen: a proposal that cannot be placed without changing the replay, an assertion that is not checkable on the captured screen, or a withheld one (its values are hidden because they may contain text you typed or other unstable data). Details (Alt+I) explains the focused row. Done keeps your decisions; Cancel, Esc or the close box restores them. Assertions under a checkpoint that is not accepted are shown inactive ([-], \"inactive\"): they are not inserted, but your selection is kept and applies when you accept the checkpoint. A layout-audit suggestion shows the audit of the recorded state (profile, error and warning counts, top findings, coverage gaps); Enter changes its scope, profile, rules or suppressions.",
+      "Suggested assertions are written with severity warning; change them to error in the scenario editor when you rely on them. Save the scenario separately."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 9,
+    "Title": "Configure Test Run",
+    "Paragraphs": [
+      "In Test Explorer, Apply filter uses Query, Group and Mode. Edit shows the full Test properties. Space marks a Test, then F5 opens run configuration. Mark All and Clear Marks apply to the whole project, including Tests hidden by filters. Space toggles individual Test × Environment combinations. Start runs only selected combinations; unselected combinations are not skipped executions. A selected foreign OS profile is recorded as Skipped with a reason.",
+      "Run Explorer shows completed pairs during execution. Cancel requests owned-process cleanup; the terminal state reports cancellation. A subsequent run starts with fresh counters.",
+      "Project Results Re-run returns to matrix configuration for that Test and Environment and writes new archived history. External results retain the external runner route. Historic results and verdicts remain unchanged."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 10,
+    "Title": "Run Monitor",
+    "Paragraphs": [
+      "Alt+3 opens Run Explorer. Runs > History... selects the latest completed project run there. Previous and Next navigate other runs. The active progress line names the current combination. Choose Cancel run to request cancellation and allow target cleanup.",
+      "Esc returns to the previous window while the run continues. Enter or F6 opens Results. Wait for cancellation/completion before closing or replacing a busy project."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 11,
+    "Title": "Results",
+    "Paragraphs": [
+      "F6 or Alt+4 shows Results. Enter inspects an execution, checkpoint or evidence row. Ctrl+Left/Right chooses earlier/later runs. Open run loads a historical result.",
+      "Alt+I opens an image, Alt+N native evidence, Alt+C comparison and Alt+V candidate review. Alt+Y copies the path, Alt+F opens the folder of the selected run and Alt+E opens a re-run configuration. Runs > Open Output Folder opens the configured output root independently of the selected run.",
+      "Show in Scenarios locates the attached JSON scenario. Logical PNGs are rendered from cells and are distinct from native screenshots. A failed assertion, skipped execution and visual mismatch have different meanings; inspect the message and evidence.",
+      "A layout-audit result lists every finding (class, rule, view, cell rectangle, message, evidence) and the coverage: rules evaluated, not applicable, rules that could not be evaluated and why (for example a target whose Testing payload does not expose label text), and suppressed findings with their reasons. Only error-class findings fail it (strict: warnings too). A truncated view tree, missing view tree or no rule that could run gives UNSUPPORTED, never a pass. The run report has a Layout findings section."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 12,
+    "Title": "Baseline comparison and approval",
+    "Paragraphs": [
+      "Alt+5 opens Comparison. Arrows and PgUp/PgDn pan; N/P moves between differences; Alt+D/E/A selects Diff, Expected or Actual. Esc closes the window.",
+      "Candidate review is explicit: inspect the evidence, tick the confirmation with Space and choose Approve or Replace. Cancel is the default. Only supported logical cell baselines can be approved.",
+      "Missing, invalid or incompatible baselines are not successful comparisons. Check baseline store configuration, execution size and checkpoint identity. Approval changes the expected evidence: approve only after reviewing the intended result.",
+      "Alt+5 opens Baseline Explorer. Search by scenario, checkpoint, resolution or recorded capture identity. Adopt copies a manifest and approved references into the project and preserves the source. Review a candidate and explicitly confirm approval or replacement. Slots use actual OS, driver, logical capture and grid, including the initial grid for resized checkpoints. Profile names never select a slot. Save commits the approved store, and a fresh run is required for a new verdict. Native capture remains evidence only."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 13,
+    "Title": "Messages",
+    "Paragraphs": [
+      "Alt+6 opens Messages. Read warnings, operation failures and details there. Status notices summarize recent actions; Messages keeps the session history for inspection.",
+      "For a failed target preparation or run, inspect its detailed message and output path. Esc closes Messages without closing the project."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 14,
+    "Title": "Settings and preferences",
+    "Paragraphs": [
+      "Project Properties stores project-specific target, output and baseline configuration. Run Configuration controls the proposed execution.",
+      "User preferences keep recent projects and workspace view state. PreparedTargetsRoot, when configured in user settings, controls the default preparation location; otherwise the per-user data folder is used.",
+      "There is no separate help-authoring or preferences editor in this help viewer. External scenario editing uses TSHARPWORKBENCH_EDITOR when set, otherwise the system text editor."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 15,
+    "Title": "Keyboard shortcuts",
+    "Paragraphs": [
+      "F1 opens contextual help. F10 opens the menu bar. Alt+P/S/T/R/B/W/H selects the global menus. In help: Tab links, Enter follows, Backspace returns, Alt+I or F1 opens Index, PgUp/PgDn scrolls, Esc closes.",
+      "Global keys",
+      "  F1         Contextual help       F10       Menu bar",
+      "  F2         Refresh scenarios                      Alt+X     Exit",
+      "  F3         Project Information        Ctrl+N    New project",
+      "  F4         Project Properties                     Ctrl+O    Open project",
+      "  F5         Run... (Run Configuration)             Ctrl+S    Save project",
+      "  F6         Show results",
+      "  Alt+1..6   Project, Scenarios, Run Explorer, Results,    Alt+F3    Close the current window",
+      "             Comparison, Messages Ctrl+F5   Size/Move the current window",
+      "  Alt+S      Scenarios menu",
+      "",
+      "Scenarios (Alt+2)  managed JSON and read-only compiled scenarios",
+      "  Ins Add files (one per Add, Done ends)   Del Remove (the file stays on disk)   F2 Refresh   Esc Close",
+      "  Alt+N New   Alt+A Add files   Alt+O Add folder   Alt+M Remove   Alt+E / Enter Edit   Alt+V Validate",
+      "  Edit scenario... opens the internal editor; its External editor button uses TSHARPWORKBENCH_EDITOR, else the system text editor.",
+      "Scenario editor  ordered steps, the selected step's fields, problems with their location ($.steps[i].field)",
+      "  Ins / Alt+N New step   Enter / Alt+I Edit   Del / Alt+Y Delete   Alt+C Duplicate   Alt+U / Alt+D Move   Shift+Up/Down Select a range",
+      "  Alt+M Metadata   Alt+V Validate   Ctrl+S Save   Alt+A Save as   Alt+L External editor   Esc Close",
+      "  Tab reaches the Problems list when present; Enter selects its affected step. Alt+O Record...  records input you make in the target's own Console/SDL window (Record Interaction window)",
+      "Record Interaction  Start (Tab)  Alt+A Pause  Alt+U Resume  Alt+O Stop  Alt+C Cancel  Esc back to the editor",
+      "  Alt+N Append  Alt+L Insert at selection  Alt+E Replace selection  Alt+D Discard; keys pressed in Workbench are never recorded.",
+      "  Invalid files open read-only and are never written; a file changed on disk is never overwritten (Reload or Save as).",
+      "",
+      "Workspace",
+      "  Tab, Shift+Tab   Groups, Search, Scenarios, Details",
+      "  Space, Enter     Mark or unmark the focused scenario (double-click also marks)",
+      "  Ins              Mark or unmark and move to the next scenario",
+      "  Left, Right      Collapse or expand a group; Enter toggles a group with children",
+      "  Alt+G Groups   Alt+C Scenarios   Alt+E Search   Alt+D Details   (Alt+S is the Scenarios menu)",
+      "  Every scenario is listed for every driver; a run records what the chosen driver cannot execute as Skipped",
+      "  F3 Overview  F4 Properties...  F5 Run...  F6 Results   (Alt+O, Alt+U and Alt+L also work)",
+      "  Project Information (F3)  project data and recent runs   Ctrl+P Full paths   Esc Close",
+      "  Esc              Nothing (never cancels a run; use Run Monitor or Runs > Cancel Run)",
+      "",
+      "Legacy Run Monitor  Esc returns to the previous window (the run continues)   Alt+C Cancel run   Enter Results",
+      "Results (Alt+4)  Enter inspects an execution, opens a checkpoint image or an evidence row",
+      "  Ctrl+Left/Right earlier/later run   Alt+I Image  Alt+N Native  Alt+C Compare  Alt+V Review candidate",
+      "  Alt+Y Copy path  Alt+O Open run  Alt+F Run folder  Alt+E Re-run (Run Configuration first)",
+      "  Run Explorer > Show in Scenarios: the execution's attached JSON document in Scenarios (Alt+2)",
+      "Comparison (Alt+5)  Arrows, PgUp/PgDn pan   N / P next / previous difference   Alt+D/E/A Diff, Expected, Actual",
+      "Results, Comparison, Messages (Alt+6) and Start Page: Esc closes the window",
+      "Start Page  Enter opens the highlighted recent project   Ctrl+O Open project   Ctrl+N New project",
+      "",
+      "Settings > Prepare Target Copy... / Fix Original Target...: one chooser, two modes. Prepare a copy (default) copies the",
+      "  whole application elsewhere; Fix the original adds only missing Workbench files after confirmation.",
+      "  Destination (Alt+E): edit the folder, Browse... (Alt+B) or New folder... (Alt+N); a new or empty folder only.",
+      "  Compatibility is decided by the TSharpVision version: the same version from another build (FW003, information)",
+      "  is prepared and fixed normally and confirmed by Verify target; another version is refused. Compatibility... (Alt+P).",
+      "",
+      "Dialogs",
+      "  Enter  default button    Esc  Cancel    Tab  next field    Space  toggle a check box",
+      "  Unsaved Project Changes: Cancel is the default; choose Save (Alt+S) or Discard (Alt+D) explicitly.",
+      "  Baseline candidate review: Space ticks the confirmation; Approve/Replace is never the default (Cancel is).",
+      "External editor uses TSHARPWORKBENCH_EDITOR, otherwise the system text editor."
+    ],
+    "Links": [
+      1,
+      3,
+      9
+    ]
+  },
+  {
+    "Id": 16,
+    "Title": "Black-Box and White-Box modes",
+    "Paragraphs": [
+      "White-Box Mode (diagnostic-logical) uses diagnostic workflows exposed by a target prepared for that contract. Black-Box Mode (proxy-logical) runs against an ordinary TSharpVision application using the Workbench Proxy. These are execution backends, distinct from functional/visual test type and the display driver.",
+      "The stored JSON values remain diagnostic-logical and proxy-logical for compatibility with existing scenarios, projects and tooling. Help uses Black-Box Mode and White-Box Mode.",
+      "Headless (NullDriver) has no target window and captures logical cells. SDL window uses SDLDriver software rendering; SDL GPU window uses SDLGpuDriver; Windows console uses an owned Win32ConsoleDriver console.",
+      "Optional native evidence: renderer pixels for SDL, completed GPU frame for SDL GPU, console cells for Windows console. Every checkpoint keeps logical cells (TVS1), metadata and a logical PNG. A logical PNG is not a native screenshot.",
+      "Native driver tests require audited native-capable scenarios; inspect the Scenario Manager and run validation for availability. Target settings do not change the Workbench console driver.",
+      "Black-Box Mode uses Proxy to control an ordinary TSharpVision application. White-Box Mode uses an instrumented target with diagnostic fixtures."
+    ],
+    "Links": [
+      1,
+      3,
+      9
+    ]
+  },
+  {
+    "Id": 17,
+    "Title": "Troubleshooting",
+    "Paragraphs": [
+      "Help unavailable: reinstall or redeploy the complete Workbench distribution, including Help/TSharpWorkbench.hlp and its .sha256 integrity file. Do not copy only the executable. Project operations remain available if help is missing.",
+      "Target cannot start: verify its executable path, dependencies and matching TSharpVision version. Use Target diagnostics and Verify before Prepare a copy or Fix original target.",
+      "No scenarios: check attached file paths, validation problems, group/search filters and refresh with F2. Unsupported driver combinations are Skipped, not failures or passed tests.",
+      "Visual comparison failed: inspect Results and Comparison. Missing baseline needs review and explicit approval; invalid data needs repair. Do not approve just to silence a failure.",
+      "Scenario save refused: invalid files are read-only; external modifications require Reload or Save as. A busy run must finish or be cancelled before replacing its project."
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  },
+  {
+    "Id": 18,
+    "Title": "About and licence",
+    "Paragraphs": [
+      "TSharpWorkbench â€” UI Testing & Automation for TSharpVision. Created by Lubomir Klimes. Copyright Â© 2021â€“2026 Lubomir Klimes.",
+      "Help > About shows installed Workbench and TSharpVision versions. Workbench discovers JSON scenarios, runs owned targets and separates logical from native evidence. The TUI stores native projects in .tsw archives. The CLI runner uses its existing project format.",
+      "MIT License\n\nCopyright (c) 2021-2026 Lubomir Klimes\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+    ],
+    "Links": [
+      1,
+      15,
+      16
+    ]
+  }
+]

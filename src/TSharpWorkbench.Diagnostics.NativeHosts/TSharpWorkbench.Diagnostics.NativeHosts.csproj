@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TSharpWorkbench.Diagnostics.NativeHosts</RootNamespace>
+    <AssemblyName>TSharpWorkbench.Diagnostics.NativeHosts</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!-- Layer C qualification for the Windows console hosts: launches test-owned classic conhost and
+       Windows Terminal windows running a real TSharpVision application (Console driver) or the Terminal
+       driver's real VT output, captures that window's rendered pixels and checks them against the cells
+       the host was asked to show. -->
+  <ItemGroup>
+    <PackageReference Include="TSharpVision" />
+    <PackageReference Include="TSharpVision.Drivers.Console" />
+    <PackageReference Include="TSharpVision.Drivers.Terminal" />
+    <!-- Reused driver-output fixtures (composite screen, update steps), native-pixel PNG codec and repository helpers. -->
+    <ProjectReference Include="../TSharpWorkbench.Diagnostics.DriverOutput/TSharpWorkbench.Diagnostics.DriverOutput.csproj" />
+    <ProjectReference Include="../TSharpWorkbench.Diagnostics.NativePixels/TSharpWorkbench.Diagnostics.NativePixels.csproj" />
+    <ProjectReference Include="../TSharpWorkbench.Testing/TSharpWorkbench.Testing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TSharpWorkbench.Diagnostics.NativeHosts.Tests" />
+  </ItemGroup>
+
+</Project>
